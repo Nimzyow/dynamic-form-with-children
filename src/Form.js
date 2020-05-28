@@ -1,11 +1,7 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, Fragment } from "react";
 
 export const Form = (props) => {
   const [state, setState] = useState(props.initialData);
-
-  useEffect(() => {
-    console.log("STATE IS?", state);
-  }, [state]);
 
   const onChange = (e) => {
     setState({
