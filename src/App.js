@@ -1,5 +1,4 @@
 import React from "react";
-import { ToSendToForm } from "./ToSendToForm";
 import { Person } from "./Person";
 import "./App.css";
 
