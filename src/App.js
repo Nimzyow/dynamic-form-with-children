@@ -1,24 +1,58 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Fragment } from "react";
+import { Form } from "./Form";
+import "./App.css";
 
 function App() {
+  const handleSubmit = (state) => {
+    console.log("IM FROM APP", state);
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Form
+        initialData={{
+          username: "",
+          email: "",
+          password: "",
+          password2: "",
+        }}
+        handleSubmit={handleSubmit}
+      >
+        {({ state, onChange }) => {
+          const { username, email, password, password2 } = state;
+          return (
+            <Fragment>
+              <label>Username</label>
+              <input
+                name="username"
+                type="text"
+                onChange={onChange}
+                value={username || ""}
+              />
+              <label>Email</label>
+              <input
+                name="email"
+                type="email"
+                onChange={onChange}
+                value={email || ""}
+              />
+              <label>Password</label>
+              <input
+                name="password"
+                type="text"
+                onChange={onChange}
+                value={password || ""}
+              />
+              <label>Confirm password</label>
+              <input
+                name="password2"
+                type="text"
+                onChange={onChange}
+                value={password2 || ""}
+              />
+            </Fragment>
+          );
+        }}
+      </Form>
     </div>
   );
 }
