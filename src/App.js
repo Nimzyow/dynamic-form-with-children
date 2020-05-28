@@ -1,60 +1,9 @@
-import React, { Fragment } from "react";
-import { Form } from "./Form";
+import React from "react";
+import { ToSendToForm } from "./ToSendToForm";
 import "./App.css";
 
 function App() {
-  const handleSubmit = (state) => {
-    console.log("IM FROM APP", state);
-  };
-  return (
-    <div className="App">
-      <Form
-        initialData={{
-          username: "",
-          email: "",
-          password: "",
-          password2: "",
-        }}
-        handleSubmit={handleSubmit}
-      >
-        {({ state, onChange }) => {
-          const { username, email, password, password2 } = state;
-          return (
-            <Fragment>
-              <label>Username</label>
-              <input
-                name="username"
-                type="text"
-                onChange={onChange}
-                value={username || ""}
-              />
-              <label>Email</label>
-              <input
-                name="email"
-                type="email"
-                onChange={onChange}
-                value={email || ""}
-              />
-              <label>Password</label>
-              <input
-                name="password"
-                type="text"
-                onChange={onChange}
-                value={password || ""}
-              />
-              <label>Confirm password</label>
-              <input
-                name="password2"
-                type="text"
-                onChange={onChange}
-                value={password2 || ""}
-              />
-            </Fragment>
-          );
-        }}
-      </Form>
-    </div>
-  );
+  return <ToSendToForm />;
 }
 
 export default App;
