@@ -9,7 +9,9 @@ describe("Form.js", () => {
     initialData: {},
     handleSubmit: onSubmitSpy,
   };
-  beforeEach(() => {});
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
   it("renders form container to page", () => {
     const wrapper = shallow(<Form {...defaultData}>{() => {}}</Form>);
     const formContainer = wrapper.find("form");
@@ -125,5 +127,81 @@ describe("Form.js", () => {
     selectElement = wrapper.find('[data-test="select-test"]');
 
     expect(selectElement.prop("value")).toBe("two");
+  });
+  it("checkbox form triggers onCheckBoxChange", () => {
+    const wrapper = shallow(
+      <Form initialData={{ tags: [] }} handleSubmit={onSubmitSpy}>
+        {({ state, onCheckBoxChange }) => {
+          return (
+            <input
+              data-test="test"
+              name="tags"
+              value="Fantasy"
+              onChange={onCheckBoxChange}
+              belongsto="tags"
+            />
+          );
+        }}
+      </Form>
+    );
+
+    const checkboxElement = wrapper.find('[data-test="test"]');
+
+    checkboxElement.simulate("change", {
+      target: {
+        name: "Fantasy",
+        checked: true,
+        attributes: { belongsto: { value: "tags" } },
+      },
+    });
+
+    const buttonElement = wrapper.find("button");
+
+    buttonElement.simulate("click");
+
+    expect(onSubmitSpy).toHaveBeenCalledTimes(1);
+    expect(onSubmitSpy).toHaveBeenCalledWith({ tags: ["Fantasy"] });
+  });
+  it("checkbox clicked twice will result in nothing being sent", () => {
+    const wrapper = shallow(
+      <Form initialData={{ tags: [] }} handleSubmit={onSubmitSpy}>
+        {({ state, onCheckBoxChange }) => {
+          return (
+            <input
+              data-test="test"
+              name="tags"
+              value="Fantasy"
+              onChange={onCheckBoxChange}
+              belongsto="tags"
+            />
+          );
+        }}
+      </Form>
+    );
+
+    const checkboxElement = wrapper.find('[data-test="test"]');
+
+    checkboxElement.simulate("change", {
+      target: {
+        name: "Fantasy",
+        checked: true,
+        attributes: { belongsto: { value: "tags" } },
+      },
+    });
+
+    checkboxElement.simulate("change", {
+      target: {
+        name: "Fantasy",
+        checked: false,
+        attributes: { belongsto: { value: "tags" } },
+      },
+    });
+
+    const buttonElement = wrapper.find("button");
+
+    buttonElement.simulate("click");
+
+    expect(onSubmitSpy).toHaveBeenCalledTimes(1);
+    expect(onSubmitSpy).toHaveBeenCalledWith({ tags: [] });
   });
 });
