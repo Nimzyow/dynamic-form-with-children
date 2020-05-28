@@ -92,4 +92,38 @@ describe("Form.js", () => {
     expect(onSubmitSpy).toHaveBeenCalledTimes(1);
     expect(onSubmitSpy).toHaveBeenCalledWith({ username: "CHANGING THIS" });
   });
+
+  it("onChange changes value of dropdown option", () => {
+    const select = ["one", "two", "three"];
+
+    const wrapper = shallow(
+      <Form initialData={{ optionSelected: "one" }}>
+        {({ state, onChange }) => {
+          return (
+            <select
+              data-test="select-test"
+              value={state.optionSelected}
+              name="selection"
+              onChange={onChange}
+            >
+              {select.map((num) => (
+                <option key={num} value={num}>
+                  {num}
+                </option>
+              ))}
+            </select>
+          );
+        }}
+      </Form>
+    );
+    let selectElement = wrapper.find('[data-test="select-test"]');
+
+    selectElement.simulate("change", {
+      target: { name: "optionSelected", value: select[1] },
+    });
+
+    selectElement = wrapper.find('[data-test="select-test"]');
+
+    expect(selectElement.prop("value")).toBe("two");
+  });
 });
