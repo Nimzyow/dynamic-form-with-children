@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 
 export const Person = (props) => {
   const [state, setState] = useState(props.initState);
@@ -10,9 +10,16 @@ export const Person = (props) => {
     });
   };
 
+  const onSubmit = () => {
+    props.handleSubmit(state);
+  };
+
   return (
-    <div data-test="person-container">
-      {props.children({ state, onChange })}
-    </div>
+    <Fragment>
+      <div data-test="person-container">
+        {props.children({ state, onChange })}
+      </div>
+      <button onClick={onSubmit}></button>
+    </Fragment>
   );
 };

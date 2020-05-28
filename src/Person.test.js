@@ -53,4 +53,34 @@ describe("Person.js", () => {
 
     expect(inputElement.prop("value")).toBe("CHANGING THIS");
   });
+  it("onSubmit returns state", () => {
+    const wrapper = shallow(
+      <Person initState={{ name: "" }} handleSubmit={onSubmitSpy}>
+        {({ state, onChange }) => {
+          return (
+            <input
+              data-test="text-test"
+              type="text"
+              name="name"
+              value={state.name || ""}
+              onChange={onChange}
+            />
+          );
+        }}
+      </Person>
+    );
+
+    const inputElement = wrapper.find('[data-test="text-test"]');
+
+    inputElement.simulate("change", {
+      target: { name: "name", value: "CHANGING THIS" },
+    });
+
+    const buttonElement = wrapper.find("button");
+
+    buttonElement.simulate("click");
+
+    expect(onSubmitSpy).toHaveBeenCalledTimes(1);
+    expect(onSubmitSpy).toHaveBeenCalledWith({ name: "CHANGING THIS" });
+  });
 });
